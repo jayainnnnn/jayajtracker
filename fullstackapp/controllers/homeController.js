@@ -4,7 +4,7 @@ const axios = require('axios');
 const reference = require("../ref/path");
 const api_path = reference.api_path
 const rootdir = require('../utils/pathutil');
-
+const { sendLoginEmail } = require('../utils/email');
 
 exports.homeController = (req,res,next) => {
     res.render('home',{pageTitle:'home',username:req.session.user?.name});
@@ -29,6 +29,7 @@ exports.postlogin = async(req,res,next) => {
             name: name,
             email: email
             };
+            await sendLoginEmail(email, name);
             res.render('home',{pageTitle:'Home',username:req.session.user?.name});
         }
         catch(error){
